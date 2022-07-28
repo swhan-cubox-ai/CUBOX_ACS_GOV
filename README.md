@@ -7,8 +7,9 @@
 
 실행환경 
  - Windows
- - jdk 1.8 
+ - jdk 1.8
  - 전자정부프레임워크 3.10.0
+ - Spring Framework 4.3
  - ide : eclipse or IntelliJ
  - tomcat 9.0
   

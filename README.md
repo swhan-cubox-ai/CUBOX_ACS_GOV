@@ -16,23 +16,24 @@
 사용된 기술
  
 - MVC patten
- M-Model
- * MariaDB
- * MyBatis
  
- V-View
- * JSP
- * jstl
- * jQuery
- * html
- * Sitemesh
+   M-Model
+  * MariaDB
+  * MyBatis
+
+  V-View
+  * JSP
+  * jstl
+  * jQuery
+  * html
+  * Sitemesh
+
+  C-Controller
+  * Spring
+  * java
  
- C-Controller
- * Spring
- * java
- 
- build
- * Maven
+  build
+  * Maven
  
  ## 프로젝트 환경 구성하기 
  > 깃헙 리포지토리 우측 상단의 'Clone or download' 녹색 버튼을 클릭하고 'Download Zip'으로 압축 파일을 받아서 원하는 곳에 압축을 풉니다.

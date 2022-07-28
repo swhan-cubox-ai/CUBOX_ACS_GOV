@@ -216,25 +216,25 @@
 		       left outer join tsiteuser t on t.fsiteid = u.reg_id<![CDATA[
 		 where u.reg_dt >= str_to_date(#{startDate}, '%Y-%m-%d')
 		   and u.reg_dt <= str_to_date(concat(#{endDate}, ' 23:59:59'), '%Y-%m-%d %H:%i:%S')
-		]]><if test='@cubox.admin.util.CommonUtils@notEmpty(cntn_ip)'>
+		]]><if test='@aero.cubox.util.CommonUtils@notEmpty(cntn_ip)'>
 		   and u.cntn_ip like concat('%', #{cntn_ip}, '%')
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(reg_id)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(reg_id)'>
 		   and u.reg_id like concat('%', #{reg_id}, '%')
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(reg_nm)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(reg_nm)'>
 		   and t.fname like concat('%', #{reg_nm}, '%')
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(chg_cl_cd)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(chg_cl_cd)'>
 		   and u.chg_cl_cd = #{chg_cl_cd}
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(funm)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(funm)'>
 		   and u.funm like concat('%', #{funm}, '%')
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(fuid)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(fuid)'>
 		   and u.fuid like concat('%', #{fuid}, '%')
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(fcdno)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(fcdno)'>
 		   and u.fcdno like concat('%', #{fcdno}, '%')
 		</if>    
     </sql>

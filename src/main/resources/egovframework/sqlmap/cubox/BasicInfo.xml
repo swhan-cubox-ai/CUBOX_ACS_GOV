@@ -51,16 +51,16 @@
 			, (select st.site_nm from site_tb st where st.site_id = tsu.site_id) as site_nm
 		from tsiteuser tsu
 		where 1=1
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(site_id)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(site_id)'>
 		and site_id = #{site_id}
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(fsiteid)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(fsiteid)'>
 		and fsiteid like concat('%', #{fsiteid}, '%')
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(fname)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(fname)'>
 		and fname like concat('%', #{fname}, '%')
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(author_id)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(author_id)'>
 		and author_id = #{author_id}
 		</if>
 		order by tsu.site_id asc
@@ -71,16 +71,16 @@
 		select count(1)
 		from tsiteuser tsu
 		where 1=1
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(site_id)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(site_id)'>
 		and site_id = #{site_id}
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(fsiteid)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(fsiteid)'>
 		and fsiteid like concat('%', #{fsiteid}, '%')
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(fname)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(fname)'>
 		and fname like concat('%', #{fname}, '%')
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(author_id)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(author_id)'>
 		and author_id = #{author_id}
 		</if>
 	</select>
@@ -189,13 +189,13 @@
 		   and ts.fsiteid = #{fsiteid}
 		</if>
 		<choose>
-		  <when test="@cubox.admin.util.CommonUtils@notEmpty(syslogdept3)">
+		  <when test="@aero.cubox.util.CommonUtils@notEmpty(syslogdept3)">
 		   and fsyscode like concat(#{syslogdept3}, '%')
 		  </when>
-		  <when test="@cubox.admin.util.CommonUtils@notEmpty(syslogdept2)">
+		  <when test="@aero.cubox.util.CommonUtils@notEmpty(syslogdept2)">
 		   and fsyscode like concat(#{syslogdept2}, '%')
 		  </when>
-		  <when test="@cubox.admin.util.CommonUtils@notEmpty(syslogdept1)">
+		  <when test="@aero.cubox.util.CommonUtils@notEmpty(syslogdept1)">
 		   and fsyscode like concat(#{syslogdept1}, '%')
 		  </when>
 		</choose>
@@ -278,7 +278,7 @@
     	select count(a.fsiteid) as cnt
     	from tsiteuser a
     	where a.fuid = #{fuid}
-    	<if test="@cubox.admin.util.CommonUtils@notEmpty(fsiteid)">
+    	<if test="@aero.cubox.util.CommonUtils@notEmpty(fsiteid)">
 			and a.fsiteid != #{fsiteid}
 		</if>
     </select>
@@ -475,14 +475,14 @@
 				   and (  str_to_date(#{keep_sdt},'%Y-%m-%d') between keep_sdt and keep_edt
 				       or str_to_date(#{keep_edt},'%Y-%m-%d') between keep_sdt and keep_edt
 				       )
-				<if test="@cubox.admin.util.CommonUtils@notEmpty(keep_seq)">
+				<if test="@aero.cubox.util.CommonUtils@notEmpty(keep_seq)">
 				   and keep_seq <![CDATA[<>]]> #{keep_seq}
 				</if>
 				 union all
 				select sum(case when keep_sdt between str_to_date(#{keep_sdt},'%Y-%m-%d') and str_to_date(#{keep_edt},'%Y-%m-%d') 
 				                  or keep_edt between str_to_date(#{keep_sdt},'%Y-%m-%d') and str_to_date(#{keep_edt},'%Y-%m-%d') then 1 else 0 end) as cf_dup 
 				  from gatelog_set_tb 
-				<if test="@cubox.admin.util.CommonUtils@notEmpty(keep_seq)">
+				<if test="@aero.cubox.util.CommonUtils@notEmpty(keep_seq)">
 				 where keep_seq <![CDATA[<>]]> #{keep_seq}
 				</if>
 		       ) t	

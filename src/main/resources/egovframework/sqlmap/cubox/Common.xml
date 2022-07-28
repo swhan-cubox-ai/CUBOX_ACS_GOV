@@ -96,7 +96,7 @@
          	site_desc as siteDesc
          from site_tb st
          where use_yn = 'Y'
-         <if test="@cubox.admin.util.CommonUtils@notEmpty(siteId)">
+         <if test="@aero.cubox.util.CommonUtils@notEmpty(siteId)">
 		   and	site_id = #{siteId}
 		</if>
 		order by sort_ordr
@@ -147,19 +147,19 @@
     	select	fkind1, fkind2, fkind3, fuseyn, fvalue, forder, fdoc
           from	tcommcd
          where	1=1
-         <if test="@cubox.admin.util.CommonUtils@notEmpty(fkind1)">
+         <if test="@aero.cubox.util.CommonUtils@notEmpty(fkind1)">
          	and	fkind1 = #{fkind1}
          </if>
-         <if test="@cubox.admin.util.CommonUtils@notEmpty(fkind2)">
+         <if test="@aero.cubox.util.CommonUtils@notEmpty(fkind2)">
          	and	fkind2 = #{fkind2}
          </if>
-         <if test="@cubox.admin.util.CommonUtils@notEmpty(fkind3)">
+         <if test="@aero.cubox.util.CommonUtils@notEmpty(fkind3)">
          	and	UPPER(fkind3) LIKE concat ('%',UPPER(#{fkind3}),'%')
          </if>
-         <if test="@cubox.admin.util.CommonUtils@notEmpty(fvalue)">
+         <if test="@aero.cubox.util.CommonUtils@notEmpty(fvalue)">
          	and	UPPER(fvalue) LIKE concat ('%',UPPER(#{fvalue}),'%')
          </if>
-         <if test="@cubox.admin.util.CommonUtils@notEmpty(fuseyn)">
+         <if test="@aero.cubox.util.CommonUtils@notEmpty(fuseyn)">
          	and	fuseyn = #{fuseyn}
          </if>
          order by fkind1, fkind2, forder, fkind3
@@ -254,13 +254,13 @@
 		update author_tb set
 			author_nm = #{authorNm},
 			author_desc = #{authorDesc},  ]]>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(sortOrdr)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(sortOrdr)">
 			sort_ordr = #{sortOrdr},
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@empty(sortOrdr)">
+		<if test="@aero.cubox.util.CommonUtils@empty(sortOrdr)">
 			sort_ordr = (select max(sort_ordr)+1 from author_tb),
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(useYn)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(useYn)">
 			use_yn = #{useYn},
 		</if>			
 			modify_dt = now(3)
@@ -318,7 +318,7 @@
 			at.author_desc as authorDesc
 		from author_tb at
 		where at.use_yn = 'Y'
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(authorId)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(authorId)">
 			and author_id = #{authorId}
 		</if>
 	</select>
@@ -339,7 +339,7 @@
 		     , ifnull((select t.fkind3 from tcommcd t where t.fkind1 = 'combo' and t.fkind2  = 'COMBO_Fcardstatus' and t.fvalue = c.fstatus),'-') as cfstatus
 		  from tgatelog l
 		  left outer join tcard_main c on c.fuid = l.fuid and c.fcdno = l.fcdno
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(ssFuid)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(ssFuid)'>
 		 where l.fuid = #{ssFuid}
 		</if>
 		 order by fevttm desc
@@ -410,7 +410,7 @@
 		             , sum(case when fevtcd in ('0', '39') then 0 else 1 end) as cf_fail
 		          from tgatelog
 		         where fevttm between date_format(date_add(curdate(), interval -5 day), '%Y-%m-%d') and concat(date_format(date_add(curdate(), interval -5 day), '%Y-%m-%d'), ' 23:59:59.999')
-		        <if test='@cubox.admin.util.CommonUtils@notEmpty(ssFuid)'>
+		        <if test='@aero.cubox.util.CommonUtils@notEmpty(ssFuid)'>
 		           and fuid = #{ssFuid}
 		        </if> ) t
 		 union all 
@@ -424,7 +424,7 @@
 		             , sum(case when fevtcd in ('0', '39') then 0 else 1 end) as cf_fail
 		          from tgatelog
 		         where fevttm between date_format(date_add(curdate(), interval -4 day), '%Y-%m-%d') and concat(date_format(date_add(curdate(), interval -4 day), '%Y-%m-%d'), ' 23:59:59.999')
-		        <if test='@cubox.admin.util.CommonUtils@notEmpty(ssFuid)'>
+		        <if test='@aero.cubox.util.CommonUtils@notEmpty(ssFuid)'>
 		           and fuid = #{ssFuid}
 		        </if> ) t
 		 union all 
@@ -438,7 +438,7 @@
 		             , sum(case when fevtcd in ('0', '39') then 0 else 1 end) as cf_fail
 		          from tgatelog
 		         where fevttm between date_format(date_add(curdate(), interval -3 day), '%Y-%m-%d') and concat(date_format(date_add(curdate(), interval -3 day), '%Y-%m-%d'), ' 23:59:59.999')
-		        <if test='@cubox.admin.util.CommonUtils@notEmpty(ssFuid)'>
+		        <if test='@aero.cubox.util.CommonUtils@notEmpty(ssFuid)'>
 		           and fuid = #{ssFuid}
 		        </if> ) t
 		 union all 
@@ -452,7 +452,7 @@
 		             , sum(case when fevtcd in ('0', '39') then 0 else 1 end) as cf_fail
 		          from tgatelog
 		         where fevttm between date_format(date_add(curdate(), interval -2 day), '%Y-%m-%d') and concat(date_format(date_add(curdate(), interval -2 day), '%Y-%m-%d'), ' 23:59:59.999')
-		        <if test='@cubox.admin.util.CommonUtils@notEmpty(ssFuid)'>
+		        <if test='@aero.cubox.util.CommonUtils@notEmpty(ssFuid)'>
 		           and fuid = #{ssFuid}
 		        </if> ) t
 		 union all 
@@ -466,7 +466,7 @@
 		             , sum(case when fevtcd in ('0', '39') then 0 else 1 end) as cf_fail
 		          from tgatelog
 		         where fevttm between date_format(date_add(curdate(), interval -1 day), '%Y-%m-%d') and concat(date_format(date_add(curdate(), interval -1 day), '%Y-%m-%d'), ' 23:59:59.999')
-		        <if test='@cubox.admin.util.CommonUtils@notEmpty(ssFuid)'>
+		        <if test='@aero.cubox.util.CommonUtils@notEmpty(ssFuid)'>
 		           and fuid = #{ssFuid}
 		        </if> ) t
 		 union all 
@@ -480,7 +480,7 @@
 		             , sum(case when fevtcd in ('0', '39') then 0 else 1 end) as cf_fail
 		          from tgatelog
 		         where fevttm between date_format(curdate(), '%Y-%m-%d') and concat(date_format(curdate(), '%Y-%m-%d'), ' 23:59:59.999')
-		        <if test='@cubox.admin.util.CommonUtils@notEmpty(ssFuid)'>
+		        <if test='@aero.cubox.util.CommonUtils@notEmpty(ssFuid)'>
 		           and fuid = #{ssFuid}
 		        </if> ) t
 	</select>

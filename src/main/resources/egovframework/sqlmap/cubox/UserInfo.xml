@@ -58,32 +58,32 @@
 		       inner join tcard_main c on c.fuid = u.fuid
 		       left outer join tbio_main b on b.fuid = u.fuid
 		 where 1 = 1 
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(srchCond)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(srchCond)'>
 		   and u.fpartcd1 = #{srchCond} 
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(srchFustatus)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(srchFustatus)'>
 		   and u.fustatus = #{srchFustatus}
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(srchFutype)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(srchFutype)'>
 		   and u.futype = #{srchFutype}
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(srchAuthType)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(srchAuthType)'>
 		   and u.fauthtype = #{srchAuthType}   
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(srchFcardStatus)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(srchFcardStatus)'>
 		   and c.fstatus = #{srchFcardStatus}
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(srchCfsdt)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(srchCfsdt)'>
 		   and c.fsdt <![CDATA[>=]]> #{srchCfsdt}
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(srchCfedt)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(srchCfedt)'>
 		   and c.fedt <![CDATA[<=]]> #{srchCfedt}
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(srchFexpireyn)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(srchFexpireyn)'>
 		   <!-- and c.fedt > date_format(date_add(curdate(), interval -1 day), '%Y-%m-%d')  /*유효기간만료자*/ -->
 		   and c.fstatus = 'Y'
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(srchFbioyn)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(srchFbioyn)'>
 		   <!-- and (case when b.fimg is not null and b.fimg != '' then 'Y' else 'N' end) = #{srchFbioyn}  /*사진등록여부*/ -->
 		   <if test='srchFbioyn == "Y"'>
 		   and b.fsstatus = 'U'
@@ -92,20 +92,20 @@
 		   and (b.fsstatus is null or b.fsstatus <> 'U')
 		   ]]></if>
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(colChkQuery)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(colChkQuery)'>
 		   and ${colChkQuery}
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(colChkQuery2)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(colChkQuery2)'>
 		   and ${colChkQuery2}
 		</if>
 	</sql>
 
 	<sql id="selectUserListSort">
 		<choose>
-			<when test="@cubox.admin.util.CommonUtils@notEmpty(hidSortName)">
+			<when test="@aero.cubox.util.CommonUtils@notEmpty(hidSortName)">
 				order by ${hidSortName}
 				<choose>
-					<when test='@cubox.admin.util.CommonUtils@notEmpty(hidSortNum) and hidSortNum != "1"'>desc</when>
+					<when test='@aero.cubox.util.CommonUtils@notEmpty(hidSortNum) and hidSortNum != "1"'>desc</when>
 					<otherwise>asc</otherwise>
 				</choose>
 				<!-- , funm asc, fuid asc -->
@@ -137,7 +137,7 @@
 		  from (
 		<include refid="selectUserListColumns" />
 		<include refid="selectUserListConditions" />
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(fuids)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(fuids)">
 			and (c.fuid, c.fcdno) in
 			<foreach collection="fuids" item="fud" open="(" close=")" separator=",">
 				(#{fud.fuid}, #{fud.fcarno})
@@ -811,13 +811,13 @@
     		left outer join tcard_main c on c.fuid = a.fuid
     	where a.futype in ('1','4')
 			and a.fuid not in ( select t.fuid from tsiteuser t where t.fuid is not null )
-    	<if test="@cubox.admin.util.CommonUtils@notEmpty(fuid)">
+    	<if test="@aero.cubox.util.CommonUtils@notEmpty(fuid)">
 			and a.fuid like concat('%',#{fuid},'%')
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(funm)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(funm)">
 			and a.funm like concat('%',#{funm},'%')
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(fcdno)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(fcdno)">
 			and c.fcdno like concat('%',#{fcdno},'%')
 		</if>
     </select>
@@ -834,13 +834,13 @@
     		left outer join tcard_main c on c.fuid = a.fuid
     	where a.futype in ('1','4')
     	  and a.fuid not in ( select t.fuid from tsiteuser t where t.fuid is not null )
-    	<if test="@cubox.admin.util.CommonUtils@notEmpty(fuid)">
+    	<if test="@aero.cubox.util.CommonUtils@notEmpty(fuid)">
 			and a.fuid like concat('%',#{fuid},'%')
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(funm)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(funm)">
 			and a.funm like concat('%',#{funm},'%')
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(fcdno)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(fcdno)">
 			and c.fcdno like concat('%',#{fcdno},'%')
 		</if>
 		order by a.fregdt
@@ -887,7 +887,7 @@
     	     , fedt = #{fedt}
     	     , fstatus = #{fstatus}
     	     , fsstatus = #{fsstatus}
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(fnewcdno)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(fnewcdno)">
 		     , fcdno = #{fnewcdno}
 		</if>
 		 where fcdno = #{fcdno}
@@ -974,7 +974,7 @@
 		fimg = '',
 		fextdata = '',
 		fsstatus = 'Q',
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(fsidx)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(fsidx)'>
 			fsidx = #{fsidx},
 		</if>
 		fmoddt = now(3)
@@ -1113,34 +1113,34 @@
 		       inner join tuserinfo_main c on c.fuid = b.fuid and c.fpartcd1 = b.fpartcd1
 		       inner join tcard_main d on d.fuid = c.fuid
 		 where 1 = 1
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(arrAuthGroupCd)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(arrAuthGroupCd)">
 		   and a.author_group_id in <foreach collection="arrAuthGroupCd" item="item" index="index" separator="," open="(" close=")">#{item}</foreach>
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(srchNm)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(srchNm)">
 		   and c.funm like concat('%', #{srchNm}, '%') 
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(srchFutype)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(srchFutype)">
 		   and c.futype = #{srchFutype}
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(srchCdNo)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(srchCdNo)">
 		   and d.fcdno like concat('%', #{srchCdNo}, '%')
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(srchFpartnm1) and @cubox.admin.util.CommonUtils@notEmpty(srchPartWord)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(srchFpartnm1) and @aero.cubox.util.CommonUtils@notEmpty(srchPartWord)">
 		   and c.fpartnm1 like concat('%', #{srchPartWord}, '%')
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(srchFpartnm2) and @cubox.admin.util.CommonUtils@notEmpty(srchPartWord)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(srchFpartnm2) and @aero.cubox.util.CommonUtils@notEmpty(srchPartWord)">
 		   and c.fpartnm2 like concat('%', #{srchPartWord}, '%')
 		</if>	
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(srchFpartnm3) and @cubox.admin.util.CommonUtils@notEmpty(srchPartWord)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(srchFpartnm3) and @aero.cubox.util.CommonUtils@notEmpty(srchPartWord)">
 		   and c.fpartnm3 like concat('%', #{srchPartWord}, '%')
 		</if>			
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(arrCardStatus) and @cubox.admin.util.CommonUtils@empty(fsNone)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(arrCardStatus) and @aero.cubox.util.CommonUtils@empty(fsNone)">
 		   and d.fstatus in <foreach collection="arrCardStatus" item="item" index="index" separator="," open="(" close=")">#{item}</foreach>
 		</if>	
-		<if test="@cubox.admin.util.CommonUtils@empty(arrCardStatus) and @cubox.admin.util.CommonUtils@notEmpty(fsNone)">
+		<if test="@aero.cubox.util.CommonUtils@empty(arrCardStatus) and @aero.cubox.util.CommonUtils@notEmpty(fsNone)">
 		   and (d.fstatus is null or length(d.fstatus) = 0)		
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(arrCardStatus) and @cubox.admin.util.CommonUtils@notEmpty(fsNone)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(arrCardStatus) and @aero.cubox.util.CommonUtils@notEmpty(fsNone)">
  		   and (   d.fstatus in <foreach collection="arrCardStatus" item="item" index="index" separator="," open="(" close=")">#{item}</foreach>
  		        or d.fstatus is null or length(d.fstatus) = 0)
 		</if>
@@ -1192,40 +1192,40 @@
 		       inner join tuserinfo_main c on c.fuid = a.fuid
 		       inner join tcard_main d on d.fuid = c.fuid
 		 where a.cud_type = 'C'
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(arrGateId)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(arrGateId)">
 		   and b.device_id in <foreach collection="arrGateId" item="item" index="index" separator="," open="(" close=")">#{item}</foreach>
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(srchNm)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(srchNm)">
 		   and c.funm like concat('%', #{srchNm}, '%') 
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(srchFutype)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(srchFutype)">
 		   and c.futype = #{srchFutype}		
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(srchCdNo)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(srchCdNo)">
 		   and d.fcdno like concat('%', #{srchCdNo}, '%')
 		</if>		
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(srchFromDt)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(srchFromDt)">
 		   and d.fsdt >= #{srchFromDt}
 		</if>	
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(srchToDt)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(srchToDt)">
 		   and d.fedt &lt;= #{srchToDt}
 		</if>			
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(srchFpartnm1) and @cubox.admin.util.CommonUtils@notEmpty(srchPartWord)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(srchFpartnm1) and @aero.cubox.util.CommonUtils@notEmpty(srchPartWord)">
 		   and c.fpartnm1 like concat('%', #{srchPartWord}, '%')
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(srchFpartnm2) and @cubox.admin.util.CommonUtils@notEmpty(srchPartWord)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(srchFpartnm2) and @aero.cubox.util.CommonUtils@notEmpty(srchPartWord)">
 		   and c.fpartnm2 like concat('%', #{srchPartWord}, '%')
 		</if>	
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(srchFpartnm3) and @cubox.admin.util.CommonUtils@notEmpty(srchPartWord)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(srchFpartnm3) and @aero.cubox.util.CommonUtils@notEmpty(srchPartWord)">
 		   and c.fpartnm3 like concat('%', #{srchPartWord}, '%')
 		</if>			
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(arrCardStatus) and @cubox.admin.util.CommonUtils@empty(fsNone)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(arrCardStatus) and @aero.cubox.util.CommonUtils@empty(fsNone)">
 		   and d.fstatus in <foreach collection="arrCardStatus" item="item" index="index" separator="," open="(" close=")">#{item}</foreach>
 		</if>	
-		<if test="@cubox.admin.util.CommonUtils@empty(arrCardStatus) and @cubox.admin.util.CommonUtils@notEmpty(fsNone)">
+		<if test="@aero.cubox.util.CommonUtils@empty(arrCardStatus) and @aero.cubox.util.CommonUtils@notEmpty(fsNone)">
 		   and (d.fstatus is null or length(d.fstatus) = 0)		
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(arrCardStatus) and @cubox.admin.util.CommonUtils@notEmpty(fsNone)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(arrCardStatus) and @aero.cubox.util.CommonUtils@notEmpty(fsNone)">
  		   and (   d.fstatus in <foreach collection="arrCardStatus" item="item" index="index" separator="," open="(" close=")">#{item}</foreach>
  		        or d.fstatus is null or length(d.fstatus) = 0)
 		</if>

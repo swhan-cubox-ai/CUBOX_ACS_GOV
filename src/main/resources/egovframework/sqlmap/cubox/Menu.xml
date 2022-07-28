@@ -10,7 +10,7 @@
 		USE_YN AS useYn,
 		SORT_ORDR AS sortOrdr
 		FROM AUTHOR_TB AC
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(use_yn)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(use_yn)">
 			WHERE USE_YN = #{use_yn}
 		</if>
 		ORDER BY AC.SORT_ORDR ASC
@@ -39,7 +39,7 @@
 		FROM AUTHOR_MENU_TB AM
 		INNER JOIN MENU_DETAIL_TB MD ON AM.MENU_CODE = MD.MENU_CODE AND MD.USE_YN = 'Y'
 		WHERE AM.AUTHOR_ID = #{author_id}
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(menu_cl_code)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(menu_cl_code)">
 			AND MD.MENU_CL_CODE = #{menu_cl_code}
 		</if>
 		  AND MD.USE_YN = 'Y'

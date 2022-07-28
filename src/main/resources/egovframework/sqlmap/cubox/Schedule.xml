@@ -138,7 +138,7 @@
 		from tuserinfo_main u
 		join tbio_main b on u.fuid  = b.fuid
 		where length(b.fimg) > 0
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(fmoddt)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(fmoddt)">
 			and COALESCE(b.fmoddt, b.fregdt) > #{fmoddt}
 		</if>
 		<!-- and b.fuid <![CDATA[<]]> 11020	-->

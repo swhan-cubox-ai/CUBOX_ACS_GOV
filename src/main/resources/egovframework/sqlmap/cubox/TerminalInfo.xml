@@ -8,17 +8,17 @@
 		from
 			tgatemst m
 		inner join tgatemst_sidx s on m.fgid = s.fgid
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(ftid)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(ftid)">
 			inner join tlocationtree t on s.fgid = t.fgid
 		</if>
 		where 1=1
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(fgid) and !fgid.equals("10")'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(fgid) and !fgid.equals("10")'>
          	 and m.fgid like concat(#{fgid}, '%')
         </if>
-        <if test="@cubox.admin.util.CommonUtils@notEmpty(ftid)">
+        <if test="@aero.cubox.util.CommonUtils@notEmpty(ftid)">
          	and t.fptid like concat(#{ftid}, '%')
         </if>
-        <if test="@cubox.admin.util.CommonUtils@notEmpty(flname)">
+        <if test="@aero.cubox.util.CommonUtils@notEmpty(flname)">
          	and (    m.flname like concat('%', #{flname}, '%')
          	      or m.fvname like concat('%', #{fvname}, '%')
          	    )
@@ -41,7 +41,7 @@
 			s.facnt,
 			s.fucnt,
 			<choose>
-				<when test="@cubox.admin.util.CommonUtils@notEmpty(ftid)">
+				<when test="@aero.cubox.util.CommonUtils@notEmpty(ftid)">
 					t.ftid as tid,
 					t.fptid as ptid,
 				</when>
@@ -56,17 +56,17 @@
 		from
 			tgatemst m
 		inner join tgatemst_sidx s on m.fgid = s.fgid
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(ftid)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(ftid)">
 			inner join tlocationtree t on s.fgid = t.fgid
 		</if>
 		where 1=1
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(fgid) and !fgid.equals("10")'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(fgid) and !fgid.equals("10")'>
          	 and m.fgid like concat(#{fgid}, '%')
         </if>
-        <if test="@cubox.admin.util.CommonUtils@notEmpty(ftid)">
+        <if test="@aero.cubox.util.CommonUtils@notEmpty(ftid)">
          	and t.fptid like concat(#{ftid}, '%')
         </if>
-        <if test="@cubox.admin.util.CommonUtils@notEmpty(flname)">
+        <if test="@aero.cubox.util.CommonUtils@notEmpty(flname)">
          	and (    m.flname like concat('%', #{flname}, '%')
          	      or m.fvname like concat('%', #{fvname}, '%')
          	    )
@@ -91,7 +91,7 @@
 	    	ff3,
 	    	fdat
 		from tgateshtype
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(fsidx)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(fsidx)">
          	where fsidx = #{fsidx}
          </if>
     </select>
@@ -246,16 +246,16 @@
 			where a.ftx in ('CMD_SEND_MESSAGE','CMD_SET_TERMINAL_OPTION')
 			and a.frecvdt >= #{startDateTime}
 			and a.frecvdt &lt;= concat(#{endDateTime},':59')
-			<if test='ftid != "0" and @cubox.admin.util.CommonUtils@notEmpty(ftid)'>
+			<if test='ftid != "0" and @aero.cubox.util.CommonUtils@notEmpty(ftid)'>
 	         	and exists (select * from tlocationtree t where a.fgid = t.fgid and t.fptid like concat(#{ftid}, '%'))
 	        </if>
-			<if test="@cubox.admin.util.CommonUtils@notEmpty(srchFtx)">
+			<if test="@aero.cubox.util.CommonUtils@notEmpty(srchFtx)">
 	         	and a.ftx = #{srchFtx}
 	        </if>
-	        <if test="@cubox.admin.util.CommonUtils@notEmpty(srchFlnam)">
+	        <if test="@aero.cubox.util.CommonUtils@notEmpty(srchFlnam)">
 	         	and b.flname like concat('%', #{srchFlnam}, '%')
 	        </if>
-	        <if test="@cubox.admin.util.CommonUtils@notEmpty(srchFstat)">
+	        <if test="@aero.cubox.util.CommonUtils@notEmpty(srchFstat)">
 	        	<choose>
 	        		<when test='srchFstat.equals("E")'>
 	        			and a.fsstatus in ('E','F')
@@ -274,16 +274,16 @@
 			where a.ftx in ('CMD_SEND_MESSAGE','CMD_SET_TERMINAL_OPTION')
 			and a.frecvdt >= #{startDateTime}
 			and a.frecvdt &lt;= concat(#{endDateTime},':59')
-			<if test='ftid != "0" and @cubox.admin.util.CommonUtils@notEmpty(ftid)'>
+			<if test='ftid != "0" and @aero.cubox.util.CommonUtils@notEmpty(ftid)'>
 	         	and exists (select * from tlocationtree t where a.fgid = t.fgid and t.fptid like concat(#{ftid}, '%'))
 	        </if>
-			<if test="@cubox.admin.util.CommonUtils@notEmpty(srchFtx)">
+			<if test="@aero.cubox.util.CommonUtils@notEmpty(srchFtx)">
 	         	and a.ftx = #{srchFtx}
 	        </if>
-	        <if test="@cubox.admin.util.CommonUtils@notEmpty(srchFlnam)">
+	        <if test="@aero.cubox.util.CommonUtils@notEmpty(srchFlnam)">
 	         	and b.flname like concat('%', #{srchFlnam}, '%')
 	        </if>
-	        <if test="@cubox.admin.util.CommonUtils@notEmpty(srchFstat)">
+	        <if test="@aero.cubox.util.CommonUtils@notEmpty(srchFstat)">
 	        	<choose>
 	        		<when test='srchFstat.equals("E")'>
 	        			and a.fsstatus in ('E','F')
@@ -294,7 +294,7 @@
 	        	</choose>
 	        </if>
         ) a
-        <if test='srchCond != "10" and @cubox.admin.util.CommonUtils@notEmpty(srchCond)'>
+        <if test='srchCond != "10" and @aero.cubox.util.CommonUtils@notEmpty(srchCond)'>
 			where a.cond = #{srchCond}
 		</if>
 	</select>
@@ -349,16 +349,16 @@
 			where a.ftx in ('CMD_SEND_MESSAGE','CMD_SET_TERMINAL_OPTION','CMD_DELETE_ALL_USER','CMD_TERMINAL_KOPEN','CMD_TERMINAL_LOCK')
 			and a.frecvdt >= #{startDateTime}
 			and a.frecvdt &lt;= concat(#{endDateTime},':59')
-	        <if test='ftid != "0" and @cubox.admin.util.CommonUtils@notEmpty(ftid)'>
+	        <if test='ftid != "0" and @aero.cubox.util.CommonUtils@notEmpty(ftid)'>
 	         	and exists (select * from tlocationtree t where a.fgid = t.fgid and t.fptid like concat(#{ftid}, '%'))
 	        </if>
-			<if test="@cubox.admin.util.CommonUtils@notEmpty(srchFtx)">
+			<if test="@aero.cubox.util.CommonUtils@notEmpty(srchFtx)">
 	         	and a.ftx = #{srchFtx}
 	        </if>
-	        <if test="@cubox.admin.util.CommonUtils@notEmpty(srchFlnam)">
+	        <if test="@aero.cubox.util.CommonUtils@notEmpty(srchFlnam)">
 	         	and b.flname like concat('%', #{srchFlnam}, '%')
 	        </if>
-	        <if test="@cubox.admin.util.CommonUtils@notEmpty(srchFstat)">
+	        <if test="@aero.cubox.util.CommonUtils@notEmpty(srchFstat)">
 	        	<choose>
 	        		<when test='srchFstat.equals("E")'>
 	        			and a.fsstatus in ('E','F')
@@ -411,16 +411,16 @@
 			where a.ftx in ('CMD_SEND_MESSAGE','CMD_SET_TERMINAL_OPTION','CMD_DELETE_ALL_USER','CMD_TERMINAL_KOPEN','CMD_TERMINAL_LOCK')
 			and a.frecvdt >= #{startDateTime}
 			and a.frecvdt &lt;= concat(#{endDateTime},':59')
-			<if test='ftid != "0" and @cubox.admin.util.CommonUtils@notEmpty(ftid)'>
+			<if test='ftid != "0" and @aero.cubox.util.CommonUtils@notEmpty(ftid)'>
 	         	and exists (select * from tlocationtree t where a.fgid = t.fgid and t.fptid like concat(#{ftid}, '%'))
 	        </if>
-			<if test="@cubox.admin.util.CommonUtils@notEmpty(srchFtx)">
+			<if test="@aero.cubox.util.CommonUtils@notEmpty(srchFtx)">
 	         	and a.ftx = #{srchFtx}
 	        </if>
-	        <if test="@cubox.admin.util.CommonUtils@notEmpty(srchFlnam)">
+	        <if test="@aero.cubox.util.CommonUtils@notEmpty(srchFlnam)">
 	         	and b.flname like concat('%', #{srchFlnam}, '%')
 	        </if>
-	        <if test="@cubox.admin.util.CommonUtils@notEmpty(srchFstat)">
+	        <if test="@aero.cubox.util.CommonUtils@notEmpty(srchFstat)">
 	        	<choose>
 	        		<when test='srchFstat.equals("E")'>
 	        			and a.fsstatus in ('E','F')
@@ -432,10 +432,10 @@
 	        </if>
 		) a
 		where 1=1
-		<if test='srchCond != "10" and @cubox.admin.util.CommonUtils@notEmpty(srchCond)'>
+		<if test='srchCond != "10" and @aero.cubox.util.CommonUtils@notEmpty(srchCond)'>
 			and a.cond = #{srchCond}
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(srchFtxnm)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(srchFtxnm)">
          	and a.ftxnm = #{srchFtxnm}
         </if>
 		order by a.fsidx desc
@@ -490,16 +490,16 @@
 				where a.ftx in ('CMD_SEND_MESSAGE','CMD_SET_TERMINAL_OPTION','CMD_DELETE_ALL_USER','CMD_TERMINAL_KOPEN','CMD_TERMINAL_LOCK')
 				and a.frecvdt >= #{startDateTime}
 				and a.frecvdt &lt;= concat(#{endDateTime},':59')
-				<if test='ftid != "0" and @cubox.admin.util.CommonUtils@notEmpty(ftid)'>
+				<if test='ftid != "0" and @aero.cubox.util.CommonUtils@notEmpty(ftid)'>
 		         	and exists (select * from tlocationtree t where a.fgid = t.fgid and t.fptid like concat(#{ftid}, '%'))
 		        </if>
-				<if test="@cubox.admin.util.CommonUtils@notEmpty(srchFtx)">
+				<if test="@aero.cubox.util.CommonUtils@notEmpty(srchFtx)">
 		         	and a.ftx = #{srchFtx}
 		        </if>
-		        <if test="@cubox.admin.util.CommonUtils@notEmpty(srchFlnam)">
+		        <if test="@aero.cubox.util.CommonUtils@notEmpty(srchFlnam)">
 		         	and b.flname like concat('%', #{srchFlnam}, '%')
 		        </if>
-		        <if test="@cubox.admin.util.CommonUtils@notEmpty(srchFstat)">
+		        <if test="@aero.cubox.util.CommonUtils@notEmpty(srchFstat)">
 		        	<choose>
 		        		<when test='srchFstat.equals("E")'>
 		        			and a.fsstatus in ('E','F')
@@ -552,16 +552,16 @@
 				where a.ftx in ('CMD_SEND_MESSAGE','CMD_SET_TERMINAL_OPTION','CMD_DELETE_ALL_USER','CMD_TERMINAL_KOPEN','CMD_TERMINAL_LOCK')
 				and a.frecvdt >= #{startDateTime}
 				and a.frecvdt &lt;= concat(#{endDateTime},':59')
-				<if test='ftid != "0" and @cubox.admin.util.CommonUtils@notEmpty(ftid)'>
+				<if test='ftid != "0" and @aero.cubox.util.CommonUtils@notEmpty(ftid)'>
 		         	and exists (select * from tlocationtree t where a.fgid = t.fgid and t.fptid like concat(#{ftid}, '%'))
 		        </if>
-				<if test="@cubox.admin.util.CommonUtils@notEmpty(srchFtx)">
+				<if test="@aero.cubox.util.CommonUtils@notEmpty(srchFtx)">
 		         	and a.ftx = #{srchFtx}
 		        </if>
-		        <if test="@cubox.admin.util.CommonUtils@notEmpty(srchFlnam)">
+		        <if test="@aero.cubox.util.CommonUtils@notEmpty(srchFlnam)">
 		         	and b.flname like concat('%', #{srchFlnam}, '%')
 		        </if>
-		        <if test="@cubox.admin.util.CommonUtils@notEmpty(srchFstat)">
+		        <if test="@aero.cubox.util.CommonUtils@notEmpty(srchFstat)">
 		        	<choose>
 		        		<when test='srchFstat.equals("E")'>
 		        			and a.fsstatus in ('E','F')
@@ -573,10 +573,10 @@
 		        </if>
 	        ) a
 	        where 1=1
-	        <if test='srchCond != "10" and @cubox.admin.util.CommonUtils@notEmpty(srchCond)'>
+	        <if test='srchCond != "10" and @aero.cubox.util.CommonUtils@notEmpty(srchCond)'>
 				and a.cond = #{srchCond}
 			</if>
-			<if test="@cubox.admin.util.CommonUtils@notEmpty(srchFtxnm)">
+			<if test="@aero.cubox.util.CommonUtils@notEmpty(srchFtxnm)">
 	         	and a.ftxnm = #{srchFtxnm}
 	        </if>
 			order by a.fsidx desc
@@ -663,7 +663,7 @@
 		     , use_yn as fuseyn
 		  from device_info_tb
 		 where site_id = #{fpartcd1}
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(flname)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(flname)">
 		   and device_nm like concat('%', #{flname}, '%')
 		</if>
 		 order by device_id	

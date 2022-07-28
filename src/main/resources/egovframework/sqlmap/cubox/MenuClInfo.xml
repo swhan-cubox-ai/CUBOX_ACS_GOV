@@ -89,13 +89,13 @@
 		  from menu_detail_tb d
 		       inner join menu_cl_tb c on c.menu_cl_code = d.menu_cl_code 
 		 where 1=1
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(menu_cl_code)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(menu_cl_code)'>
 		   and d.menu_cl_code = #{menu_cl_code}
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(menu_nm)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(menu_nm)'>
 		   and d.menu_nm like concat('%', #{menu_nm}, '%')
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(use_yn)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(use_yn)'>
 		   and d.use_yn = #{use_yn}
 		</if>
 		 order by c.sort_ordr, d.sort_ordr
@@ -107,13 +107,13 @@
 		  from menu_detail_tb d
 		       inner join menu_cl_tb c on c.menu_cl_code = d.menu_cl_code 
 		 where 1=1
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(menu_cl_code)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(menu_cl_code)'>
 		   and d.menu_cl_code = #{menu_cl_code}
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(menu_nm)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(menu_nm)'>
 		   and d.menu_nm like concat('%', #{menu_nm}, '%')
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(use_yn)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(use_yn)'>
 		   and d.use_yn = #{use_yn}
 		</if>
 	</select>	

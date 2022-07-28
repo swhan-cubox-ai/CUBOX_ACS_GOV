@@ -9,22 +9,22 @@
 LEFT OUTER JOIN floor_management_tb fm
 			 ON di.device_floor = fm.idx 
 		  WHERE 1=1
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(deviceId) and !deviceId.equals("10")'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(deviceId) and !deviceId.equals("10")'>
          	AND di.device_id like concat(#{deviceId}, '%')
         </if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(accAuthType)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(accAuthType)'>
          	AND di.access_auth_type = #{accAuthType}
         </if>
-        <if test="@cubox.admin.util.CommonUtils@notEmpty(faceAuthType)">
+        <if test="@aero.cubox.util.CommonUtils@notEmpty(faceAuthType)">
          	AND di.face_auth_type = #{faceAuthType} 
         </if>
-        <if test="@cubox.admin.util.CommonUtils@notEmpty(deviceFloor)">
+        <if test="@aero.cubox.util.CommonUtils@notEmpty(deviceFloor)">
          	AND di.device_floor = #{deviceFloor} 
         </if>
-        <if test="@cubox.admin.util.CommonUtils@notEmpty(useYn)">
+        <if test="@aero.cubox.util.CommonUtils@notEmpty(useYn)">
          	AND di.use_yn = #{useYn} 
         </if>
-        <if test="@cubox.admin.util.CommonUtils@notEmpty(deviceNm)">
+        <if test="@aero.cubox.util.CommonUtils@notEmpty(deviceNm)">
        	    AND (    di.device_nm like concat('%', #{deviceNm}, '%')
        	          OR di.device_desc like concat('%', #{deviceDesc}, '%')
        	        )
@@ -46,22 +46,22 @@ LEFT OUTER JOIN floor_management_tb fm
 LEFT OUTER JOIN floor_management_tb fm
 			 ON di.device_floor = fm.idx 
 		  WHERE 1=1
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(deviceId) and !deviceId.equals("10")'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(deviceId) and !deviceId.equals("10")'>
          	AND di.device_id like concat(#{deviceId}, '%')
         </if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(accAuthType)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(accAuthType)'>
          	AND di.access_auth_type = #{accAuthType}
         </if>
-        <if test="@cubox.admin.util.CommonUtils@notEmpty(faceAuthType)">
+        <if test="@aero.cubox.util.CommonUtils@notEmpty(faceAuthType)">
          	AND di.face_auth_type = #{faceAuthType} 
         </if>
-        <if test="@cubox.admin.util.CommonUtils@notEmpty(deviceFloor)">
+        <if test="@aero.cubox.util.CommonUtils@notEmpty(deviceFloor)">
          	AND di.device_floor = #{deviceFloor} 
         </if>
-        <if test="@cubox.admin.util.CommonUtils@notEmpty(useYn)">
+        <if test="@aero.cubox.util.CommonUtils@notEmpty(useYn)">
          	AND di.use_yn = #{useYn} 
         </if>
-        <if test="@cubox.admin.util.CommonUtils@notEmpty(deviceNm)">
+        <if test="@aero.cubox.util.CommonUtils@notEmpty(deviceNm)">
        	    AND (    di.device_nm like concat('%', #{deviceNm}, '%')
        	         OR di.device_desc like concat('%', #{deviceDesc}, '%')
        	        )

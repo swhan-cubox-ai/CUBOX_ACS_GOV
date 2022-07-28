@@ -36,13 +36,13 @@
 		<if test="srchCond != '10' and srchCond != null">
 		   and l.fpartcd1 = #{srchCond}
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(srchFuid)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(srchFuid)">
 		   and l.fuid = #{srchFuid}
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(stDateTime)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(stDateTime)">
 		   and l.fevttm <![CDATA[>=]]> #{stDateTime}
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(edDateTime)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(edDateTime)">
 		   and l.fevttm <![CDATA[<=]]> concat(#{edDateTime},':59')
 		</if>		
 		<if test='srchSuccess.equals("Y")'>
@@ -51,26 +51,26 @@
 		<if test='srchSuccess.equals("N")'>
 		   and l.fevtcd not in ('0', '39')
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(srchAuthType)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(srchAuthType)">
 		   and l.fauthtype = #{srchAuthType}
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(srchUserType)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(srchUserType)">
 		   and l.futype = #{srchUserType}
 		</if>		
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(arrCardStatus) and @cubox.admin.util.CommonUtils@empty(fsNone)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(arrCardStatus) and @aero.cubox.util.CommonUtils@empty(fsNone)'>
 		   and l.fcstatus in
 			<foreach collection="arrCardStatus" item="item" index="index" separator="," open="(" close=")">
 				#{item}
 			</foreach>
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(arrCardStatus) and @cubox.admin.util.CommonUtils@notEmpty(fsNone)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(arrCardStatus) and @aero.cubox.util.CommonUtils@notEmpty(fsNone)'>
 		   and (l.fcstatus in
 			<foreach collection="arrCardStatus" item="item" index="index" separator="," open="(" close=")">
 				#{item}
 			</foreach>
 		        or l.fcstatus is null or length(l.fcstatus) = 0)
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@empty(arrCardStatus) and @cubox.admin.util.CommonUtils@notEmpty(fsNone)'>
+		<if test='@aero.cubox.util.CommonUtils@empty(arrCardStatus) and @aero.cubox.util.CommonUtils@notEmpty(fsNone)'>
 		   and (l.fcstatus is null or length(l.fcstatus) = 0)
 		</if>
 		<if test='srchColChk.size != 0 and srchCondWord != ""'>
@@ -83,10 +83,10 @@
 	
 	<sql id="getGateLogListSort">
 	<choose>
-		<when test="@cubox.admin.util.CommonUtils@notEmpty(hidSortName)">
+		<when test="@aero.cubox.util.CommonUtils@notEmpty(hidSortName)">
 			order by ${hidSortName}
 			<choose>
-				<when test='@cubox.admin.util.CommonUtils@notEmpty(hidSortNum) and hidSortNum != "1"'>desc</when>
+				<when test='@aero.cubox.util.CommonUtils@notEmpty(hidSortNum) and hidSortNum != "1"'>desc</when>
 				<otherwise>asc</otherwise>
 			</choose>
 			, fevttm desc
@@ -583,15 +583,15 @@
 			from
 				tgatelog l
 			where 1=1
-				<if test="srchCond != '10' and @cubox.admin.util.CommonUtils@notEmpty(srchCond)">
+				<if test="srchCond != '10' and @aero.cubox.util.CommonUtils@notEmpty(srchCond)">
 					and	l.fpartcd1 = #{srchCond}
 				</if>
 				and l.fevttm >= #{stDateTime}
 				and l.fevttm &lt;= concat(#{edDateTime},':59')
-				<if test="@cubox.admin.util.CommonUtils@notEmpty(fcdno)">
+				<if test="@aero.cubox.util.CommonUtils@notEmpty(fcdno)">
 					and l.fcdno like concat('%',#{fcdno},'%')
 				</if>
-				<if test="@cubox.admin.util.CommonUtils@notEmpty(funm)">
+				<if test="@aero.cubox.util.CommonUtils@notEmpty(funm)">
 					and l.funm like concat('%',#{funm},'%')
 				</if>
 			group by
@@ -600,11 +600,11 @@
 		) a
 		left join tuserinfo_main b on a.fuid = b.fuid and a.fpartcd1 = b.fpartcd1
 		where fvalue1 > 0
-		<if test='srchTemp.equals("Y") and @cubox.admin.util.CommonUtils@empty(srchVisit)'>
+		<if test='srchTemp.equals("Y") and @aero.cubox.util.CommonUtils@empty(srchVisit)'>
 			and	IFNULL(b.fvisitnum,'') like concat('%', #{srchTVCardNum},'%')
 			and	b.futype = '9'
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@empty(srchTemp) and srchVisit.equals("Y")'>
+		<if test='@aero.cubox.util.CommonUtils@empty(srchTemp) and srchVisit.equals("Y")'>
 			and	IFNULL(b.fvisitnum,'') like concat('%', #{srchTVCardNum},'%')
 			and	b.futype in ('5','6','7','8')
 		</if>
@@ -644,15 +644,15 @@
 			from
 				tgatelog l
 			where 1=1
-				<if test="srchCond != '10' and @cubox.admin.util.CommonUtils@notEmpty(srchCond)">
+				<if test="srchCond != '10' and @aero.cubox.util.CommonUtils@notEmpty(srchCond)">
 					and	l.fpartcd1 = #{srchCond}
 				</if>
 				and l.fevttm >= #{stDateTime}
 				and l.fevttm &lt;= concat(#{edDateTime},':59')
-				<if test="@cubox.admin.util.CommonUtils@notEmpty(fcdno)">
+				<if test="@aero.cubox.util.CommonUtils@notEmpty(fcdno)">
 					and l.fcdno like concat('%',#{fcdno},'%')
 				</if>
-				<if test="@cubox.admin.util.CommonUtils@notEmpty(funm)">
+				<if test="@aero.cubox.util.CommonUtils@notEmpty(funm)">
 					and l.funm like concat('%',#{funm},'%')
 				</if>
 			group by
@@ -662,11 +662,11 @@
 		left join tuserinfo_main b on a.fuid = b.fuid and a.fpartcd1 = b.fpartcd1
 		left outer join tcard_main c on c.fuid = a.fuid and c.fcdno = a.fcdno
 		where fvalue1 > 0
-		<if test='srchTemp.equals("Y") and @cubox.admin.util.CommonUtils@empty(srchVisit)'>
+		<if test='srchTemp.equals("Y") and @aero.cubox.util.CommonUtils@empty(srchVisit)'>
 			and	IFNULL(b.fvisitnum,'') like concat('%', #{srchTVCardNum},'%')
 			and	b.futype = '9'
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@empty(srchTemp) and srchVisit.equals("Y")'>
+		<if test='@aero.cubox.util.CommonUtils@empty(srchTemp) and srchVisit.equals("Y")'>
 			and	IFNULL(b.fvisitnum,'') like concat('%', #{srchTVCardNum},'%')
 			and	b.futype in ('5','6','7','8')
 		</if>
@@ -680,15 +680,15 @@
 		  from tgatelog l
 		       left outer join tuserinfo_main b on l.fuid = b.fuid and l.fpartcd1 = b.fpartcd1  
 		 where l.fevtcd not in ('0', '39')
-		<if test="srchCond != '10' and @cubox.admin.util.CommonUtils@notEmpty(srchCond)">
+		<if test="srchCond != '10' and @aero.cubox.util.CommonUtils@notEmpty(srchCond)">
 		   and l.fpartcd1 = #{srchCond}
 		</if>
 		   and l.fevttm >= #{stDateTime}
 		   and l.fevttm &lt;= concat(#{edDateTime},':59')
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(futype)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(futype)">
 		   and b.futype = #{futype}
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(fcdno)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(fcdno)">
 		   and l.fcdno like concat('%',#{fcdno},'%')
 		</if>
     </select>
@@ -712,18 +712,18 @@
 		       left outer join tcommcd x on x.fkind1 = 'combo' and x.fkind2 = 'COMBO_Fcardstatus' and x.fvalue = c.fstatus 
 		       left outer join tcommcd y on y.fkind1 = 'combo' and y.fkind2 = 'COMBO_Futype' and y.fvalue = b.futype       
 		 where l.fevtcd not in ('0', '39')
-		<if test="srchCond != '10' and @cubox.admin.util.CommonUtils@notEmpty(srchCond)">
+		<if test="srchCond != '10' and @aero.cubox.util.CommonUtils@notEmpty(srchCond)">
 		   and l.fpartcd1 = #{srchCond}
 		</if>
 		   and l.fevttm >= #{stDateTime}
 		   and l.fevttm &lt;= concat(#{edDateTime},':59')
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(futype)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(futype)">
 		   and b.futype = #{futype}
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(fcdno)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(fcdno)">
 		   and l.fcdno like concat('%',#{fcdno},'%')
 		</if>
-		<if test='@cubox.admin.util.CommonUtils@notEmpty(arrCardStatus) and @cubox.admin.util.CommonUtils@notEmpty(fsNone)'>
+		<if test='@aero.cubox.util.CommonUtils@notEmpty(arrCardStatus) and @aero.cubox.util.CommonUtils@notEmpty(fsNone)'>
 			and	(c.fstatus in
 			<foreach collection="arrCardStatus" item="item" index="index" separator="," open="(" close=")">
 				#{item}
@@ -757,15 +757,15 @@
 		       left outer join tcommcd x on x.fkind1 = 'combo' and x.fkind2 = 'COMBO_Fcardstatus' and x.fvalue = c.fstatus 
 		       left outer join tcommcd y on y.fkind1 = 'combo' and y.fkind2 = 'COMBO_Futype' and y.fvalue = b.futype       
 		 where l.fevtcd not in ('0', '39')
-		<if test="srchCond != '10' and @cubox.admin.util.CommonUtils@notEmpty(srchCond)">
+		<if test="srchCond != '10' and @aero.cubox.util.CommonUtils@notEmpty(srchCond)">
 		   and l.fpartcd1 = #{srchCond}
 		</if>
 		   and l.fevttm >= #{stDateTime}
 		   and l.fevttm &lt;= concat(#{edDateTime},':59')
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(futype)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(futype)">
 		   and b.futype = #{futype}
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(fcdno)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(fcdno)">
 		   and l.fcdno like concat('%',#{fcdno},'%')
 		</if>
 		 group by l.fcdno, l.fuid, l.funm, l.fpartcd1
@@ -809,15 +809,15 @@
 				from
 					tgatelog l
 				where 1=1
-					<if test="srchCond != '10' and @cubox.admin.util.CommonUtils@notEmpty(srchCond)">
+					<if test="srchCond != '10' and @aero.cubox.util.CommonUtils@notEmpty(srchCond)">
 						and	l.fpartcd1 = #{srchCond}
 					</if>
 					and l.fevttm >= #{stDateTime}
 					and l.fevttm &lt;= concat(#{edDateTime},':59')
-					<if test="@cubox.admin.util.CommonUtils@notEmpty(fcdno)">
+					<if test="@aero.cubox.util.CommonUtils@notEmpty(fcdno)">
 						and l.fcdno like concat('%',#{fcdno},'%')
 					</if>
-					<if test="@cubox.admin.util.CommonUtils@notEmpty(funm)">
+					<if test="@aero.cubox.util.CommonUtils@notEmpty(funm)">
 						and l.funm like concat('%',#{funm},'%')
 					</if>
 				group by
@@ -827,11 +827,11 @@
 			left join tuserinfo_main b on a.fuid = b.fuid and a.fpartcd1 = b.fpartcd1
 			left outer join tcard_main c on c.fuid = a.fuid and c.fcdno = a.fcdno
 			where fvalue1 > 0
-			<if test='srchTemp.equals("Y") and @cubox.admin.util.CommonUtils@empty(srchVisit)'>
+			<if test='srchTemp.equals("Y") and @aero.cubox.util.CommonUtils@empty(srchVisit)'>
 				and	IFNULL(b.fvisitnum,'') like concat('%', #{srchTVCardNum},'%')
 				and	b.futype = '9'
 			</if>
-			<if test='@cubox.admin.util.CommonUtils@empty(srchTemp) and srchVisit.equals("Y")'>
+			<if test='@aero.cubox.util.CommonUtils@empty(srchTemp) and srchVisit.equals("Y")'>
 				and	IFNULL(b.fvisitnum,'') like concat('%', #{srchTVCardNum},'%')
 				and	b.futype in ('5','6','7','8')
 			</if>
@@ -849,7 +849,7 @@
 			from
 				tgatelog l
 			where 1=1
-			<if test="srchCond != '10' and @cubox.admin.util.CommonUtils@notEmpty(srchCond)">
+			<if test="srchCond != '10' and @aero.cubox.util.CommonUtils@notEmpty(srchCond)">
 				and	l.fpartcd1 = #{srchCond}
 			</if>
 			and l.fevttm >= #{stDateTime}
@@ -886,7 +886,7 @@
 			from
 				tgatelog l
 			where 1=1
-			<if test="srchCond != '10' and @cubox.admin.util.CommonUtils@notEmpty(srchCond)">
+			<if test="srchCond != '10' and @aero.cubox.util.CommonUtils@notEmpty(srchCond)">
 				and	l.fpartcd1 = #{srchCond}
 			</if>
 			and l.fevttm >= #{stDateTime}
@@ -905,7 +905,7 @@
     	select count(1) as cnt /*[LogInfo.getUsrFailLogTotalCnt]*/
 		from tgatelog l
 		where l.fevtcd not in ('0', '39')
-		<if test="srchCond != '10' and @cubox.admin.util.CommonUtils@notEmpty(srchCond)">
+		<if test="srchCond != '10' and @aero.cubox.util.CommonUtils@notEmpty(srchCond)">
 		and l.fpartcd1 = #{srchCond}
 		</if>
 		and l.fevttm >= #{stDateTime}
@@ -931,7 +931,7 @@
 			(select fvalue from tcommcd where fkind1 = 'code' and fkind2 = 'evttype' and fkind3 = l.fauthtype ) as fvalue2
 		from tgatelog l
 		where l.fevtcd not in ('0', '39')
-		<if test="srchCond != '10' and @cubox.admin.util.CommonUtils@notEmpty(srchCond)">
+		<if test="srchCond != '10' and @aero.cubox.util.CommonUtils@notEmpty(srchCond)">
 		and l.fpartcd1 = #{srchCond}
 		</if>
 		and l.fevttm >= #{stDateTime}

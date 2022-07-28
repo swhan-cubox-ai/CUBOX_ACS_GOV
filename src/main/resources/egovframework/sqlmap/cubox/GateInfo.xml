@@ -284,10 +284,10 @@
 
     <update id="updateLocationGate" parameterType="HashMap">
     	update tlocationgate set
-	        <if test="@cubox.admin.util.CommonUtils@notEmpty(flh)">
+	        <if test="@aero.cubox.util.CommonUtils@notEmpty(flh)">
     			flh = #{flh}
 	        </if>
-	        <if test="@cubox.admin.util.CommonUtils@notEmpty(fli)">
+	        <if test="@aero.cubox.util.CommonUtils@notEmpty(fli)">
     			fli = #{fli}
 	        </if>
     	where fgid = #{fgid}
@@ -309,7 +309,7 @@
 	
 	<update id="newGateAuthTypeChange" parameterType="HashMap">
 		update device_info_tb set
-			<if test="@cubox.admin.util.CommonUtils@notEmpty(accAuthType)">
+			<if test="@aero.cubox.util.CommonUtils@notEmpty(accAuthType)">
 				access_auth_type = #{accAuthType}
 			</if>
 		where device_id = #{deviceId}
@@ -317,7 +317,7 @@
 	
 	<update id="newGateMatchTypeChange" parameterType="HashMap">
 		update device_info_tb set
-			<if test="@cubox.admin.util.CommonUtils@notEmpty(faceAuthType)">
+			<if test="@aero.cubox.util.CommonUtils@notEmpty(faceAuthType)">
 				face_auth_type = #{faceAuthType}
 			</if>
 		where device_id = #{deviceId}

@@ -15,17 +15,17 @@
 	    	(select count(1) from author_group_detail_tb gd where gd.author_group_id = ag.author_group_id) as detailCnt
     	from author_group_tb ag  
     	where 1=1  	 
-    	<if test="@cubox.admin.util.CommonUtils@notEmpty(useYn)">
+    	<if test="@aero.cubox.util.CommonUtils@notEmpty(useYn)">
    			and ag.use_yn = #{useYn}
    		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(authorGroupId)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(authorGroupId)">
 			and ag.author_group_id = #{authorGroupId}
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(authorGroupNm)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(authorGroupNm)">
 			and ag.author_group_nm like concat('%', #{authorGroupNm}, '%')
 		</if>
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(fuid)">
-			<if test="@cubox.admin.util.CommonUtils@notEmpty(siteId)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(fuid)">
+			<if test="@aero.cubox.util.CommonUtils@notEmpty(siteId)">
 				and ag.author_group_id not in (
 					select 
 						gt.author_group_id
@@ -77,7 +77,7 @@
     	delete from user_author_group_tb
     	where fuid = #{fuid}
     	  and fpartcd1 = #{siteId}	
-    	<if test="@cubox.admin.util.CommonUtils@notEmpty(groupArray)">
+    	<if test="@aero.cubox.util.CommonUtils@notEmpty(groupArray)">
 			and author_group_id not in
 	    	 <foreach collection="groupArray" item="grpCd" open="(" close=")" separator=",">
 	    	 	#{grpCd}
@@ -149,7 +149,7 @@
 			where agt.use_yn = 'Y'
 			  and gt.fuid = #{fuid}
 			  and gt.fpartcd1 = #{siteId}
-			<if test="@cubox.admin.util.CommonUtils@notEmpty(groupArray)">
+			<if test="@aero.cubox.util.CommonUtils@notEmpty(groupArray)">
 				and gt.author_group_id not in
 		    	 <foreach collection="groupArray" item="grpCd" open="(" close=")" separator=",">
 		    	 	#{grpCd}
@@ -176,7 +176,7 @@
 			where agt.use_yn = 'Y'
 			  and gt.fuid = #{fuid}
 			  and gt.fpartcd1 = #{siteId}
-			<if test="@cubox.admin.util.CommonUtils@notEmpty(groupArray)">
+			<if test="@aero.cubox.util.CommonUtils@notEmpty(groupArray)">
 				and gt.author_group_id in
 		    	 <foreach collection="groupArray" item="grpCd" open="(" close=")" separator=",">
 		    	 	#{grpCd}
@@ -290,7 +290,7 @@
 		join device_info_tb tm on dt.fgid = tm.device_id 
 		where dt.use_yn = 'Y'
 		and tm.site_id = #{siteId}
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(authorGroupId)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(authorGroupId)">
 		and dt.author_group_id = #{authorGroupId}
 		</if>
 		order by dt.sort_ordr
@@ -312,7 +312,7 @@
 			join author_group_tb agt on gt.author_group_id = agt.author_group_id
 			where agt.use_yn = 'Y'
 			  and gt.fuid = #{fuid}
-			<if test="@cubox.admin.util.CommonUtils@notEmpty(siteId)">
+			<if test="@aero.cubox.util.CommonUtils@notEmpty(siteId)">
 				and gt.fpartcd1 = #{siteId}
 			</if>
 		)
@@ -331,7 +331,7 @@
 		where b.use_yn = 'Y'
 		  and c.use_yn = 'Y'
 		  and mst.use_yn = 'Y'
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(fuids)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(fuids)">
 			and (a.fuid, a.fpartcd1) in
 	    	 <foreach collection="fuids" item="fud" open="(" close=")" separator=",">
 	    	 	(#{fud.fuid}, #{fud.fpartcd1})
@@ -350,7 +350,7 @@
 		from device_info_tb mt
 		where mt.use_yn = 'Y'
 		and mt.site_id = #{siteId}
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(authorGroupId)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(authorGroupId)">
 		and mt.device_id not in (select ad.fgid
 								   from author_group_detail_tb ad
 								  where ad.author_group_id = #{authorGroupId}
@@ -441,10 +441,10 @@
     	update author_group_tb set
     		author_group_nm = #{authorGroupNm},
     		author_group_desc = #{authorGroupDesc},
-    	<if test="@cubox.admin.util.CommonUtils@notEmpty(sortOrdr)">
+    	<if test="@aero.cubox.util.CommonUtils@notEmpty(sortOrdr)">
     		sort_ordr = #{sortOrdr},
     	</if>
-    	<if test="@cubox.admin.util.CommonUtils@empty(sortOrdr)">
+    	<if test="@aero.cubox.util.CommonUtils@empty(sortOrdr)">
     		sort_ordr = (select max(sort_ordr) + 1 from author_group_tb where author_group_id <![CDATA[<>]]> #{authorGroupId}),    	
     	</if>
     		emp_yn = #{empYn},
@@ -485,7 +485,7 @@
 		and c.use_yn = 'Y'
 		and mst.use_yn = 'Y'
 		and a.author_group_id = #{authorGroupId}
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(deviceIds)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(deviceIds)">
 			and b.fgid not in
 	    	 <foreach collection="deviceIds" item="ids" open="(" close=")" separator=",">
 	    	 	#{ids}
@@ -501,7 +501,7 @@
     	<include refid="insertAuthorGroupDetailLogColumns" /> 
     	   where author_group_id = #{authorGroupId}
     	     and fgid like concat(#{siteId}, '%')
-    	<if test="@cubox.admin.util.CommonUtils@notEmpty(deviceIds)">
+    	<if test="@aero.cubox.util.CommonUtils@notEmpty(deviceIds)">
 			and fgid not in
 	    	 <foreach collection="deviceIds" item="ids" open="(" close=")" separator=",">
 	    	 	#{ids}
@@ -513,7 +513,7 @@
     	delete from author_group_detail_tb
     	where author_group_id = #{authorGroupId}
     	and fgid like concat(#{siteId}, '%')
-    	<if test="@cubox.admin.util.CommonUtils@notEmpty(deviceIds)">
+    	<if test="@aero.cubox.util.CommonUtils@notEmpty(deviceIds)">
 			and fgid not in
 	    	 <foreach collection="deviceIds" item="ids" open="(" close=")" separator=",">
 	    	 	#{ids}
@@ -574,7 +574,7 @@
 		and c.use_yn = 'Y'
 		and mst.use_yn = 'Y'
 		and a.author_group_id = #{authorGroupId}
-		<if test="@cubox.admin.util.CommonUtils@notEmpty(deviceIds)">
+		<if test="@aero.cubox.util.CommonUtils@notEmpty(deviceIds)">
 			and b.fgid in
 	    	 <foreach collection="deviceIds" item="ids" open="(" close=")" separator=",">
 	    	 	#{ids}
@@ -690,10 +690,10 @@
 		  from (select author_group_id, count(1) cf_cnt 
 				  from (select author_group_id 
 						  from author_group_tb 
-			          <if test='@cubox.admin.util.CommonUtils@notEmpty(groupArray)'>
+			          <if test='@aero.cubox.util.CommonUtils@notEmpty(groupArray)'>
 				         where author_group_id in <foreach collection="groupArray" item="item" index="index" separator="," open="(" close=")">#{item}</foreach>
 			          </if>
-			          <if test='@cubox.admin.util.CommonUtils@empty(groupArray)'>
+			          <if test='@aero.cubox.util.CommonUtils@empty(groupArray)'>
 			             where 1 = 2
 			          </if>
 						 union all

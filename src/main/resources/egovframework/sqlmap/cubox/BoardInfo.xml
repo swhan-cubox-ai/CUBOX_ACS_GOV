@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="boardInfo">
+
+	<select id="getNoticeList" parameterType="aero.cubox.sample.service.vo.BoardVO" resultType="aero.cubox.sample.service.vo.BoardVO">
+		select 
+			ntt_id as nttId,
+			ntt_sj as nttSj,
+			regist_id as registId,
+			(select t.fname from tsiteuser t where t.fsiteid = a.regist_id) as registNm,
+			regist_dt as registDt,
+			modify_dt as modifyDt,
+			inqire_co as inqireCo,
+			use_at as useAt,
+			NVL(atch_file_id, 0) as atchFileId,
+			(select count(1) from file_detail_tb b where a.atch_file_id = b.atch_file_id) as atchFileCnt
+		from bbs_tb a
+		where bbs_id = #{bbsId}
+		and use_at = 'Y'
+		order by regist_dt desc
+		limit #{srchCnt} offset #{offset}
+	</select>
+	
+	<select id="getNoticeListCount" parameterType="aero.cubox.sample.service.vo.BoardVO" resultType="java.lang.Integer">
+		select count(1)
+		from bbs_tb
+		where bbs_id = #{bbsId}
+		and use_at = 'Y'
+	</select>
+	
+	<insert id="insertNotice" parameterType="aero.cubox.board.service.impl.BoardInfoDAO">
+		insert into bbs_tb
+				(
+					ntt_id, 
+					bbs_id, 
+					ntt_sj, 
+					ntt_cn, 
+					use_at, 
+					regist_id, 
+					regist_dt,
+					inqire_co,
+					reply_at,
+					atch_file_id
+				)
+		values
+				(
+				
+				<choose>
+	        		<when test='"1".equals(nttId) or nttId!= null'>
+	        			1,
+	        		</when>
+	        		<otherwise>
+	        			(select MAX(ntt_id)+1 from bbs_tb AA where bbs_id=#{bbsId} ), 
+	        		</otherwise>
+	        	</choose>
+					 #{bbsId} ,
+					 #{nttSj} ,
+					 #{nttCn} ,
+					 'Y' ,
+					 #{registId},
+					 NOW(3),
+					 '0',
+					 'Y',
+					 #{atchFileId}
+				)
+	</insert>
+	
+	<select id="getNoticeDetail" parameterType="String" resultType="aero.cubox.sample.service.vo.BoardVO">
+		select 
+			ntt_id as nttId,
+			ntt_sj as nttSj,
+			regist_id as registId,
+			(select t.fname from tsiteuser t where t.fsiteid = bt.regist_id) as registNm,
+			regist_dt as registDt,
+			modify_dt as modifyDt,
+			inqire_co as inqireCo,
+			ntt_cn    as nttCn,
+			reply_at  as replyAt,
+			use_at as useAt,
+			atch_file_id as atchFileId
+		from bbs_tb as bt
+		where
+			bt.ntt_id = #{nttId} and bt.bbs_id = #{bbsId}
+	</select>
+	
+	<update id="updateNotice" parameterType="aero.cubox.sample.service.vo.BoardVO">
+		update bbs_tb
+		set ntt_sj = #{nttSj},
+			ntt_cn = #{nttCn},
+			modify_id = #{modifyId},
+			modify_dt = NOW(3),
+			atch_file_id = #{atchFileId}
+		where ntt_id = #{nttId} and bbs_id = #{bbsId}
+	</update>
+	
+	<update id="updateboardInqireCo" parameterType="String">
+		UPDATE bbs_tb SET
+			INQIRE_CO = INQIRE_CO + 1
+		WHERE BBS_ID =#{bbsId}
+		AND NTT_ID = #{nttId}
+		AND use_at = 'Y' 
+	</update>
+	
+	<update id="deleteNotice" parameterType="aero.cubox.sample.service.vo.BoardVO">
+		update bbs_tb
+		   set use_at = 'N'
+			 , modify_dt = now(3)
+			 , modify_id = #{modifyId}
+		where ntt_id =  #{nttId} 
+		and   bbs_id =  #{bbsId}
+	</update>	
+	
+	<select id="chkNttId" parameterType="aero.cubox.sample.service.vo.BoardVO" resultType="int">
+		Select count(ntt_id) from bbs_tb where bbs_id = #{bbsId}
+	</select>
+	
+	
+	<insert id="insertBbsCmnt" parameterType="aero.cubox.board.service.impl.BoardInfoDAO">
+		insert into comment_tb
+				(
+					comment_no,
+					ntt_id, 
+					bbs_id, 
+					comment_cn,
+					use_at,
+					regist_dt,
+					regist_id,
+					wrter_id
+				)
+		values
+				(
+		        	(SELECT IFNULL(MAX(comment_no) + 1, 1) FROM comment_tb b), 
+					 #{nttId} ,
+					 #{bbsId} ,
+					 #{commentCn} ,
+					 'Y',
+					 NOW(3),
+					 #{registId},
+					 #{writerId}
+				
+				)
+	</insert>
+	
+	<select id="getBbsCmntList" parameterType="aero.cubox.sample.service.vo.BoardVO" resultType="aero.cubox.sample.service.vo.BoardVO">
+		select comment_no as commentNo,
+			   DATE_FORMAT(regist_dt ,'%Y-%m-%d %H:%i:%S') as registDt,
+			   comment_cn as commentCn,
+			   regist_id  as registId,
+			   (select t.fname from tsiteuser t where t.fsiteid = a.regist_id) as registNm,
+			   modify_id  as modifyId,
+			      use_at  as useAt 
+		from comment_tb a
+		where ntt_id = #{nttId} and bbs_id = #{bbsId}	
+	</select>
+	
+	<delete id="deleteBbsCmnt" parameterType="aero.cubox.sample.service.vo.BoardVO">
+		delete from comment_tb 
+		where ntt_id =  #{nttId} 
+		and   bbs_id =  #{bbsId}
+		and   comment_no = #{commentNo}		
+	</delete>
+	
+	<select id="getCmntUseAt" parameterType="aero.cubox.sample.service.vo.BoardVO" resultType="aero.cubox.sample.service.vo.BoardVO">
+		select comment_no as commentNo,
+			   regist_dt  as registDt,
+			   comment_cn as commentCn,
+			   regist_id  as registId,
+			   (select t.fname from tsiteuser t where t.fsiteid = a.regist_id) as registNm,
+			   modify_id  as modifyId,
+			      use_at  as useAt 
+		from comment_tb a
+		where ntt_id = #{nttId} and bbs_id = #{bbsId}	
+	</select>
+	
+	<select id="cmntDetailAjax" parameterType="aero.cubox.sample.service.vo.BoardVO" resultType="aero.cubox.sample.service.vo.BoardVO">
+		select comment_no as commentNo,
+			   regist_dt  as registDt,
+			   comment_cn as commentCn,
+			   regist_id  as registId,
+			   (select t.fname from tsiteuser t where t.fsiteid = a.regist_id) as registNm,
+			   modify_id  as modifyId,
+			      use_at  as useAt 
+		from comment_tb a
+		where ntt_id = #{nttId} 
+		  and bbs_id = #{bbsId}
+		  and comment_no = #{commentNo}
+	</select>
+	
+	
+	<update id="cmntUpdateAjax" parameterType="aero.cubox.sample.service.vo.BoardVO">
+		update comment_tb set
+			use_at  = 'N',
+			modify_id = #{registId},
+			modify_dt = NOW(3),
+			comment_cn = #{commentCn}
+		where ntt_id =  #{nttId} 
+		and   bbs_id =  #{bbsId}
+		and   comment_no = #{commentNo}
+		
+	</update>
+	
+	<insert id="mergeBbsMaster" parameterType="aero.cubox.sample.service.vo.BoardVO">
+		INSERT INTO bbs_master_tb
+		(
+			bbs_id
+			, bbs_nm
+			, bbs_intrcn
+			, bbs_ty_code
+			, bbs_attrb_code
+			, reply_posbl_at
+			, file_atch_posbl_at
+			, posbl_atch_file_number
+			, posbl_atch_file_size
+			, use_at
+			, regist_id
+			, modify_id
+			, regist_dt
+			, modify_dt
+		)
+		VALUES
+		(
+			#{bbsId}
+			, #{bbsNm}
+			, #{bbsIntrcn}
+			, #{bbsTyCode}
+			, #{bbsAttrbCode}
+			, #{replyPosblAt}
+			, #{fileAtchPosblAt}
+			, #{posblAtchFileNumber}
+			, #{posblAtchFileSize}
+			, #{useAt}
+			, #{registId}
+			, #{modifyId}
+			, NOW()
+			, NOW()
+		)
+			
+		ON DUPLICATE KEY
+			
+		UPDATE 
+		<set>
+			<if test="bbsNm != null and bbsNm != ''">bbs_nm = #{bbsNm},</if>
+			<if test="bbsIntrcn != null and bbsIntrcn != ''">bbs_intrcn = #{bbsIntrcn},</if>
+			<if test="bbsTyCode != null and bbsTyCode != ''">bbs_ty_code = #{bbsTyCode},</if>
+			<if test="bbsAttrbCode != null and bbsAttrbCode != ''">bbs_attrb_code = #{bbsAttrbCode},</if>
+			<if test="replyPosblAt != null and replyPosblAt != ''">reply_posbl_at = #{replyPosblAt},</if>
+			<if test="fileAtchPosblAt != null and fileAtchPosblAt != ''">file_atch_posbl_at = #{fileAtchPosblAt},</if>
+			<if test="posblAtchFileNumber != null and posblAtchFileNumber != ''">posbl_atch_file_number = #{posblAtchFileNumber},</if>
+			<if test="posblAtchFileSize != null and posblAtchFileSize != ''">posbl_atch_file_size = #{posblAtchFileSize},</if>
+			<if test="useAt != null and useAt != ''">use_at = #{useAt},</if>
+			<if test="modifyId != null and modifyId != ''">modify_id = #{modifyId},</if>
+			modify_dt = NOW()
+		</set>
+		<where>
+			bbs_id = #{bbsId}
+		</where>
+	</insert>
+	
+	<select id="getBbsMaster" parameterType="aero.cubox.sample.service.vo.BoardVO" resultType="aero.cubox.sample.service.vo.BoardVO">
+		SELECT 
+			bm.bbs_id AS bbsId
+			, bm.bbs_nm AS bbsNm
+			, bm.bbs_intrcn AS bbsIntrcn
+			, bm.bbs_ty_code AS bbsTyCode
+			, bm.bbs_attrb_code AS bbsAttrbCode
+			, bm.reply_posbl_at AS replyPosblAt
+			, bm.file_atch_posbl_at AS fileAtchPosblAt
+			, bm.posbl_atch_file_number AS posblAtchFileNumber
+			, bm.posbl_atch_file_size AS posblAtchFileSize
+			, bm.use_at AS useAt
+			, bm.regist_id AS registId
+			, bm.modify_id AS modifyId
+			, bm.regist_dt AS registDt
+			, bm.modify_dt AS modifyDt
+		FROM 
+			bbs_master_tb as bm
+		<where>
+			bm.bbs_id = #{bbsId}
+		</where>
+	</select>
+	
+	<delete id="deleteBbsMaster" parameterType="aero.cubox.sample.service.vo.BoardVO">
+		DELETE FROM bbs_master_tb WHERE bbs_id = #{bbsId}
+	</delete>
+</mapper>

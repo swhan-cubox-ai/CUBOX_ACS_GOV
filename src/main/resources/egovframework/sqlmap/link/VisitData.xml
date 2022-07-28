@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="visit">
+
+	<select id="getVisitChgList" parameterType="HashMap" resultType="HashMap">
+		<![CDATA[
+			SELECT RIGHT(V.VisitorAccessCardRealNo, 8) as fuid
+				,V.VisitorFirstName
+				,V.VisitorLastName
+				,V.VisitorAccessCardRealNo AS fcdno
+				,V.LastUpdateDateTime
+				,C.PersonRegistrationDate1
+				,C.PersonExpirationDate1	
+				,SUBSTRING(C.PersonRegistrationDate1,1,4)+'-'+SUBSTRING(C.PersonRegistrationDate1,5,2)+'-'+SUBSTRING(C.PersonRegistrationDate1,7,2) AS fusdt
+				,SUBSTRING(C.PersonExpirationDate1,1,4)+'-'+SUBSTRING(C.PersonExpirationDate1,5,2)+'-'+SUBSTRING(C.PersonExpirationDate1,7,2) AS fuedt
+				,C.PersonValidDateEnable
+				,C.LastUpdateDateTime
+			FROM Visitor_VisitorEntryInfo V
+			INNER JOIN Data_Cardholder C ON V.VisitorAccessCardNo1 = C.PersonID
+			WHERE (V.LastUpdateDateTime > CONVERT (DATETIME, #{schedule_dt}) OR C.LastUpdateDateTime > CONVERT (DATETIME, #{schedule_dt}))
+			AND V.EntryExitStatus = '1'
+			ORDER BY V.IDX ASC
+	 	]]> 
+	</select>
+	
+	<select id="getVisitor" resultType="HashMap">
+		<![CDATA[
+			SELECT RIGHT(V.VisitorAccessCardRealNo, 8) as fuid
+				,V.VisitorFirstName
+				,V.VisitorLastName
+				,V.VisitorAccessCardRealNo AS fcdno
+				,V.LastUpdateDateTime
+				,C.PersonRegistrationDate1
+				,C.PersonExpirationDate1	
+				,SUBSTRING(C.PersonRegistrationDate1,1,4)+'-'+SUBSTRING(C.PersonRegistrationDate1,5,2)+'-'+SUBSTRING(C.PersonRegistrationDate1,7,2) AS fusdt
+				,SUBSTRING(C.PersonExpirationDate1,1,4)+'-'+SUBSTRING(C.PersonExpirationDate1,5,2)+'-'+SUBSTRING(C.PersonExpirationDate1,7,2) AS fuedt
+				,C.PersonValidDateEnable
+				,C.LastUpdateDateTime
+			FROM Visitor_VisitorEntryInfo V
+			INNER JOIN Data_Cardholder C ON V.VisitorAccessCardNo1 = C.PersonID
+			WHERE V.EntryExitStatus = '1'
+			ORDER BY V.IDX ASC
+	 	]]> 
+	</select>
+</mapper>

@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<!-- 출입관리 :: 만료 사용자 삭제 처리 :: 3분마다 -->
+	<!--
+	<bean id="beanExpireSync" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="scheduleResve" />
+		<property name="targetMethod" value="expireSync"  />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="beanExpireSyncTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+	   	<property name="jobDetail" ref="beanExpireSync" />
+	   	<property name="cronExpression" value="0 0/3 * * * ?" /> 
+	</bean>
+-->
+
+</beans>

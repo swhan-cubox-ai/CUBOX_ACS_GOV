@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cmmn.file">
+	<select id="selectFileList" parameterType="aero.cubox.file.service.vo.FileVO" resultType="aero.cubox.file.service.vo.FileVO">
+		SELECT
+			atch_file_id AS atchFileId
+			, file_sn AS fileSn
+			, file_stre_cours AS fileStreCours
+			, stre_file_nm AS streFileNm
+			, orignl_file_nm AS orignlFileNm
+			, file_extsn AS fileExtsn
+			, file_cn AS fileCn
+			, file_size AS fileSize
+		FROM file_detail_tb FD
+		WHERE FD.atch_file_id = #{atchFileId}
+		ORDER BY FD.file_sn ASC
+	</select>
+	
+	<select id="selectFloorFileList" parameterType="aero.cubox.file.service.vo.FileVO" resultType="aero.cubox.file.service.vo.FileVO">
+		SELECT
+			atch_file_id AS atchFileId
+			, file_sn AS fileSn
+			, file_stre_cours AS fileStreCours
+			, stre_file_nm AS streFileNm
+			, orignl_file_nm AS orignlFileNm
+			, file_extsn AS fileExtsn
+			, file_cn AS fileCn
+			, file_size AS fileSize
+		FROM file_detail_tb FD
+		WHERE FD.file_sn in (select max(file_sn) from file_detail_tb fdt where atch_file_id =#{atchFileId} group by atch_file_id )
+	</select>
+	
+	<select id="selectFileDetail" parameterType="aero.cubox.file.service.vo.FileVO" resultType="aero.cubox.file.service.vo.FileVO">
+		SELECT
+			atch_file_id AS atchFileId
+			, file_sn AS fileSn
+			, file_stre_cours AS fileStreCours
+			, stre_file_nm AS streFileNm
+			, orignl_file_nm AS orignlFileNm
+			, file_extsn AS fileExtsn
+			, file_cn AS fileCn
+			, file_size AS fileSize
+		FROM file_detail_tb FD
+		WHERE FD.atch_file_id = #{atchFileId}
+			AND FD.file_sn = #{fileSn}
+	</select>
+	
+	<select id="selectFileManage" parameterType="aero.cubox.file.service.vo.FileVO" resultType="aero.cubox.file.service.vo.FileVO">
+		SELECT
+			f.atch_file_id AS atchFileId
+			, f.creat_dt AS creatDt
+			, f.use_at AS useAt
+			, b.regist_id as registId
+		FROM file_tb AS f
+			INNER JOIN bbs_tb AS b
+			ON f.atch_file_id = b.atch_file_id 
+		WHERE 
+			f.atch_file_id = #{atchFileId}
+	</select>
+
+	<select id="selectFileID" resultType="String">
+		<!-- SELECT LPAD(NVL(MAX(atch_file_id) + 1, 1), 20, 0) FROM file_tb --><![CDATA[
+		select lpad(nvl(max(atch_file_id), 0)+1, 20, 0) 
+		  from bbs_tb 
+		 where atch_file_id is not null 
+		   and atch_file_id <> ''
+		]]>		   
+	</select>
+
+	<select id="selectFileSn" parameterType="aero.cubox.file.service.vo.FileVO" resultType="String">
+		SELECT NVL(MAX(file_sn) + 1, 1)
+		FROM file_detail_tb
+		WHERE atch_file_id = #{atchFileId}
+	</select>
+
+	<insert id="insertFileManage" parameterType="aero.cubox.file.service.vo.FileVO">
+		INSERT INTO file_tb(
+			atch_file_id
+			, creat_dt
+			, use_at
+		) VALUES(
+			#{atchFileId}
+			, now()
+			, 'Y'
+		)
+	</insert>
+
+	<insert id="insertFileDetail" parameterType="aero.cubox.file.service.vo.FileVO">
+		INSERT INTO file_detail_tb(
+			atch_file_id
+			, file_sn
+			, file_stre_cours
+			, stre_file_nm
+			, orignl_file_nm
+			, file_extsn
+			, file_cn
+			, file_size
+		) VALUES(
+			#{atchFileId}
+			, #{fileSn}
+			, #{fileStreCours}
+			, #{streFileNm}
+			, #{orignlFileNm}
+			, #{fileExtsn}
+			, #{fileCn}
+			, #{fileSize}
+		)
+	</insert>
+
+	<update id="updateFileDetail" parameterType="aero.cubox.file.service.vo.FileVO">
+		UPDATE file_detail_tb 
+		<set>
+			<if test="useAt != null and useAt != ''">USE_YN = #{useAt}</if>
+		</set>
+		<where>
+			atch_file_id = #{atchFileId}
+			<if test="fileSn != ''">
+				AND file_sn = #{fileSn}
+			</if>
+		</where>
+	</update>
+	
+	<!-- 첨부 파일삭제 -->
+	<update id="deleteFile" parameterType="aero.cubox.file.service.vo.FileVO">
+		UPDATE file_tb 
+		SET use_at = #{useAt}
+		WHERE atch_file_id = #{atchFileId}
+	</update>
+	
+	<delete id="deleteFileDetail" parameterType="aero.cubox.file.service.vo.FileVO">
+		DELETE FROM file_detail_tb WHERE atch_file_id = #{atchFileId} AND file_sn = #{fileSn}
+	</delete>
+	
+	<!-- 추가로 파일을 업로드가 가능한지 여부 조회 -->
+	<select id="isFileUpload" parameterType="aero.cubox.file.service.vo.FileVO" resultType="boolean">
+		SELECT 
+			IF( t.posbl_atch_file_number <![CDATA[ >= ]]> (t.fileCount + #{fileCount}), 1, 0 ) AS isFileUpload
+		FROM 
+			(
+				SELECT
+					(SELECT (select posbl_atch_file_number from bbs_master_tb where bbs_id = b.bbs_id)
+					FROM bbs_tb as b WHERE b.atch_file_id = #{atchFileId}) as posbl_atch_file_number
+					, (SELECT COUNT(*) FROM file_detail_tb WHERE atch_file_id = #{atchFileId}) as fileCount
+				FROM DUAL
+			) AS t
+	</select>
+	
+	<!-- 첨부파일 조회 -->
+	<select id="getAtchFileId" parameterType="java.util.HashMap" resultType="String">
+		SELECT ATCH_FILE_ID as atchFileId
+		  FROM FLOOR_MANAGEMENT_TB
+		 WHERE SITE_ID = #{siteId} AND idx = #{idx}
+	</select>
+	
+	<!-- 이미지 조회 view 용 단건 -->
+	<select id="getImageFileDetail" parameterType="aero.cubox.file.service.vo.FileVO" resultType="aero.cubox.file.service.vo.FileVO">
+		SELECT atch_file_id AS atchFileId
+			 , file_sn AS fileSn
+			 , file_stre_cours AS fileStreCours
+			 , stre_file_nm AS streFileNm
+			 , orignl_file_nm AS orignlFileNm
+			 , file_extsn AS fileExtsn
+			 , file_cn AS fileCn
+			 , file_size AS fileSize
+		  FROM file_detail_tb FD
+		 WHERE FD.atch_file_id = #{atchFileId}
+	  ORDER BY file_sn DESC 
+	     LIMIT 1
+	</select>
+	
+	<select id="selectFloorFileManage" parameterType="aero.cubox.file.service.vo.FileVO" resultType="aero.cubox.file.service.vo.FileVO">
+		SELECT
+			f.atch_file_id AS atchFileId
+			, f.creat_dt AS creatDt
+			, f.use_at AS useAt
+			, fm.regist_id as registId
+		FROM file_tb AS f
+			INNER JOIN floor_management_tb AS fm
+			ON f.atch_file_id = fm.atch_file_id 
+		WHERE 
+			f.atch_file_id = #{atchFileId}
+	</select>
+	
+	<select id="getFloorFileList" parameterType="aero.cubox.file.service.vo.FileVO" resultType="aero.cubox.file.service.vo.FileVO">
+		SELECT
+			atch_file_id AS atchFileId
+			, file_sn AS fileSn
+			, file_stre_cours AS fileStreCours
+			, stre_file_nm AS streFileNm
+			, orignl_file_nm AS orignlFileNm
+			, file_extsn AS fileExtsn
+			, file_cn AS fileCn
+			, file_size AS fileSize
+		FROM file_detail_tb FD
+		WHERE FD.file_sn in (select max(file_sn) from file_detail_tb fdt where atch_file_id =#{atchFileId} group by atch_file_id )
+		and atch_file_id = #{atchFileId}
+	</select>
+	
+	
+
+	<!-- <select id="selectUserTitle" parameterType="java.util.HashMap" resultType="String">
+		SELECT
+			FN_DEPT_NM(U.DEPT_CD) || '_' ||
+			U.USER_NM || '_' ||
+			TO_CHAR(SYSDATE, 'YYYYMMDD') AS FILE_TITLE
+		FROM CMN_USER U
+		WHERE U.ESNTL_ID = #esntl_id#
+	</select>
+
+	<select id="selectBioFileDetail" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT
+			CT.ESNTL_ID,
+			<isNotEmpty property="file_ty">
+	       		<isEqual property="file_ty" compareValue="finger">
+	       			CT.FNGPRT_FILE_INFO AS FILE_INFO,
+	       		</isEqual>
+	       		<isEqual property="file_ty" compareValue="face">
+	       			CT.IMAGE_FILE_INFO AS FILE_INFO,
+	       		</isEqual>       		
+	       	</isNotEmpty>
+	       	CT.IMAGE_UPDT_DT	
+		FROM CMN_USER_TMPLAT CT
+		WHERE CT.ESNTL_ID = #esntl_id#
+	</select> -->
+</mapper>

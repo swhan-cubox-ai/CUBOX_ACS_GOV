@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="link">
+	
+	<select id="selectUserList" parameterType="HashMap" resultType="HashMap">
+	    <![CDATA[
+			SELECT
+			SEQ,
+			LPAD(REPLACE(EMPNO,' ',''),'8','0') AS EMPNO,
+			NAME,
+			COMPANY,
+			START_DAY,
+			END_DAY,
+			TYPE ,
+			KSMS_PLACE,
+			KSMS_CODE
+			FROM VIEW_ICT_CENTER
+			WHERE (SEQ, EMPNO) IN (
+				SELECT
+				MAX(SEQ), EMPNO
+				FROM VIEW_ICT_CENTER
+				WHERE EMPNO IS NOT NULL
+				AND START_DAY <= #{today}
+				AND END_DAY >= #{today}
+				GROUP BY EMPNO
+			)
+	 	]]> 
+	</select>
+	
+	<select id="selectUserRgstList" parameterType="HashMap" resultType="HashMap">
+	    <![CDATA[
+			SELECT 
+			ESNTL_ID,
+			USER_ID,
+			USER_NM,
+			BRTHDY,
+			EMAIL,
+			MBTLNUM,
+			TELNO,
+			USE_AT,
+			PSITN_ROOT_CODE,
+			PSITN_UPPER_CODE,
+			PSITN_CODE,
+			AUTHOR_CODE,
+			SMS_RECPTN_AT,
+			WRITNG_ID,
+			WRITNG_DT,
+			UPDT_ID,
+			UPDT_DT
+			FROM TB_USER
+			WHERE WRITNG_DT > TO_DATE(#{schedule_dt},'YYYY-MM-DD HH24:MI:SS')
+	 	]]> 
+	</select>
+	
+	<select id="selectUserChgList" parameterType="HashMap" resultType="HashMap">
+	    <![CDATA[
+			SELECT 
+			ESNTL_ID,
+			USER_ID,
+			USER_NM,
+			BRTHDY,
+			EMAIL,
+			MBTLNUM,
+			TELNO,
+			USE_AT,
+			PSITN_ROOT_CODE,
+			PSITN_UPPER_CODE,
+			PSITN_CODE,
+			AUTHOR_CODE,
+			SMS_RECPTN_AT,
+			WRITNG_ID,
+			WRITNG_DT,
+			UPDT_ID,
+			UPDT_DT
+			FROM TB_USER
+			WHERE UPDT_DT > TO_DATE(#{schedule_dt},'YYYY-MM-DD HH24:MI:SS')	
+	 	]]> 
+	</select>
+	
+</mapper>
